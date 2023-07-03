@@ -2,13 +2,13 @@ package com.bricabrac.babapi.controller;
 
 import java.util.List;
 
-//import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bricabrac.babapi.repository.ProductRepository;
@@ -16,7 +16,6 @@ import com.bricabrac.babapi.entity.Product;
 
 @RestController
 @RequestMapping("/api/products")
-//@CrossOrigin("http://localhost:4200")
 public class ProductController {
     
     private final ProductRepository productRepository;
@@ -26,7 +25,10 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(@RequestParam(value = "onsales", required = false) Boolean onSales) {
+        if (onSales != null) {
+            return productRepository.findAllByOnSales(onSales);
+        }
         return productRepository.findAll();
     }
 
