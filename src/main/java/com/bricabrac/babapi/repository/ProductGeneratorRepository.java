@@ -24,14 +24,14 @@ public class ProductGeneratorRepository implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         List<Product> products = new ArrayList<>();
-        System.out.println(products.size());
         if(productRepository.count() > 0) {
             return;
         }
         for (int i = 0; i < 100; i++) {
+            String name = faker.commerce().productName();
             product = new Product(
-                faker.commerce().productName(), 
-                faker.commerce().productName().toLowerCase().replace(" ", "-"),
+                name, 
+                name.toLowerCase().replace(" ", "-"),
                 faker.number().randomDouble(2, 1, 100), 
                 faker.lorem().paragraph(),
                 faker.bool().bool()
