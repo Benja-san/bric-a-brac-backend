@@ -23,10 +23,10 @@ public class ProductGeneratorRepository implements CommandLineRunner {
     //When implementing CommandLineRunner, we need to override the run method
     @Override
     public void run(String... args) throws Exception {
-        List<Product> products = new ArrayList<>();
         if(productRepository.count() > 0) {
             return;
         }
+        List<Product> products = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             String name = faker.commerce().productName();
             product = new Product(
