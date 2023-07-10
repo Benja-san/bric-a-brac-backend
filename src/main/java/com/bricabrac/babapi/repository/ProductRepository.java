@@ -11,5 +11,6 @@ import com.bricabrac.babapi.entity.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>{
     public Optional<Product> findBySlug(String slug);
+    
     public List<Product> findAllByOnSales(boolean onSales);
 }
