@@ -5,12 +5,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+// @EnableMethodSecurity enables @PreAuthorize annotation in controllers
+@EnableMethodSecurity
+//Enable to use hasAuthority()
+@EnableWebSecurity
 public class SecurityConfiguration {
 
     @Bean
@@ -28,11 +34,14 @@ public class SecurityConfiguration {
         return http
         // Allow CORS for jwts and allow everybody to access the login endpoint
             .csrf(csrf -> csrf.disable())
-            //Permit all requests without authentication
-            //.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
             //Permit only if authenticated
-            .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-            .httpBasic(Customizer.withDefaults())
+            .authorizeHttpRequests(auth -> {
+                auth.requestMatchers("/api/register/**", "/index.html").permitAll();
+                auth.requestMatchers("/api/products/**", "/api/users/**", "/api/swagger-ui/**").hasAuthority("ROLE_ADMIN");
+                auth.anyRequest().authenticated();
+            })
+            .httpBasic(Customizer.withDefaults()
+            )
             .build();
     }
 
