@@ -53,6 +53,8 @@ public class SecurityConfiguration {
         return http
             // Allow CORS for jwts and allow everybody to access the login endpoint
             .csrf(csrf -> csrf.disable())
+            //important ! retrieve cors config from config package
+            .cors(Customizer.withDefaults())
             //Permit only if authenticated
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/api/auth/**", "/index.html", "/swagger-ui/**", "/v3/**").permitAll();
