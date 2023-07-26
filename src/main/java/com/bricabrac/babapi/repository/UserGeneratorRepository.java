@@ -55,8 +55,15 @@ public class UserGeneratorRepository implements CommandLineRunner {
             faker.internet().emailAddress(),
             adminRoles
         );
+        User myUser = new User(
+            "Jmaniac", 
+            passwordEncoder.encode("password"), 
+            "jmaniac@gmail.com", 
+            adminRoles
+        );
         userRepository.save(user);
         userRepository.save(admin);
+        userRepository.save(myUser);
     }
     
 }
